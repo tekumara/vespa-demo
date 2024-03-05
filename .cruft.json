@@ -1,0 +1,12 @@
+{
+  "template": "git@github.com:tekumara/k3d-template.git",
+  "commit": "100cc24f4102ccdd9b19e8aa95632b097d1e1172",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "infra_name": "vespa",
+      "_template": "git@github.com:tekumara/k3d-template.git"
+    }
+  },
+  "directory": null
+}
