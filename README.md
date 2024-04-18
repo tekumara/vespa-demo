@@ -8,6 +8,7 @@ Prerequisites:
 
 - [k3d](https://k3d.io/) (for creating a local kubernetes cluster)
 - kubectl
+- brew
 
 Install vespsa cli, create k3d cluster and deploy vespa:
 
@@ -15,15 +16,23 @@ Install vespsa cli, create k3d cluster and deploy vespa:
 make install
 ```
 
+Deploy album recommendation app and feed data:
+
+```
+make deploy-app feed-data
+```
+
 ## Usage
+
+Basic query:
+
+```
+make query
+```
 
 Endpoints:
 
 - TODO
-
-Run
-
-- `make ping`
 
 ## Failover
 
