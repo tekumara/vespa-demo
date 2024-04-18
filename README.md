@@ -46,10 +46,17 @@ Vespa:
 - statefulset.apps/vespa-query-container
 - statefulset.apps/vespa-content
 
-https://raw.githubusercontent.com/vespa-engine/sample-apps/master/examples/operations/multinode-HA/img/multinode-HA.svg
+The configserver and vespa-content statefulsets have volume claims.
 
+<img src="https://raw.githubusercontent.com/vespa-engine/sample-apps/master/examples/operations/multinode-HA/img/multinode-HA.svg" width="50%" height="50%"/>
+
+## Application packages
+
+See [Application Package Reference](https://docs.vespa.ai/en/reference/application-packages-reference.html#deploy).
 
 ## References
 
+- [vespa cli](https://docs.vespa.ai/en/vespa-cli.html) see also [its source code](https://github.com/vespa-engine/vespa/tree/master/client/go)
 - [Multinode systems](https://docs.vespa.ai/en/operations-selfhosted/multinode-systems.html)
 - [Using Kubernetes with Vespa](https://docs.vespa.ai/en/operations-selfhosted/using-kubernetes-with-vespa.html)
+- [Multinode-HA sample application (GKE)](https://github.com/vespa-engine/sample-apps/blob/master/examples/operations/multinode-HA/gke/README.md)
