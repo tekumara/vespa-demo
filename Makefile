@@ -25,19 +25,19 @@ deploy: deploy-configserver deploy-vespa
 
 deploy-configserver:
 	echo "Deploy config servers"
-	kubectl apply -f infra/config/configmap.yml -f infra/config/headless.yml -f infra/config/configserver.yml
+	kubectl apply -f infra/configmap.yml -f infra/headless.yml -f infra/configserver.yml
 	kubectl wait --for=condition=ready pod vespa-configserver-0 --timeout=1m
 	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 curl -s http://localhost:19071/state/v1/health | jq -r .status.code
 
 deploy-vespa:
 	echo "Deploying admin node, feed container cluster, query container cluster and content node pods"
 	kubectl apply \
-		-f infra/config/service-feed.yml \
-		-f infra/config/service-query.yml \
-		-f infra/config/admin.yml \
-		-f infra/config/feed-container.yml \
-		-f infra/config/query-container.yml \
-		-f infra/config/content.yml
+		-f infra/service-feed.yml \
+		-f infra/service-query.yml \
+		-f infra/admin.yml \
+		-f infra/feed-container.yml \
+		-f infra/query-container.yml \
+		-f infra/content.yml
 	make ping
 
 ## deploy app
