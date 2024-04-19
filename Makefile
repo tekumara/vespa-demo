@@ -42,7 +42,7 @@ deploy-vespa:
 
 ## deploy app
 deploy-app:
-	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 vespa deploy infra/app
+	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 vespa deploy app/package
 
 ## feed data
 feed-data:
