@@ -28,7 +28,7 @@ deploy-configserver:
 	kubectl apply -f infra/ingress/lb-configserver.yaml
 	kubectl apply -f infra/configmap.yml -f infra/headless.yml -f infra/configserver.yml
 	kubectl wait --for=condition=ready pod vespa-configserver-0 --timeout=5m
-	curl -sS --retry 5 http://localhost:19071/state/v1/health | jq -r .status.code
+	curl -sS --retry 5 --retry-all-errors http://localhost:19071/state/v1/health | jq -r .status.code
 
 deploy-vespa:
 	@echo "Deploy admin node, feed container cluster, query container cluster and content node pods"
@@ -52,9 +52,9 @@ deploy-app:
 
 ## ping
 ping:
-	tools/port-forward-exec.sh pod/vespa-content-0 19107 curl -s http://localhost:19107/state/v1/health | jq -r .status.code
-	curl -s http://localhost:8080/state/v1/health | jq -r .status.code
-	curl -s http://localhost:8081/state/v1/health | jq -r .status.code
+	tools/port-forward-exec.sh pod/vespa-content-0 19107 curl -sS http://localhost:19107/state/v1/health | jq -r .status.code
+	curl -sS http://localhost:8080/state/v1/health | jq -r .status.code
+	curl -sS http://localhost:8081/state/v1/health | jq -r .status.code
 
 ## feed data
 feed:
@@ -62,7 +62,7 @@ feed:
 
 ## query
 query:
-	curl -s --data-urlencode 'yql=select * from sources * where true' http://localhost:8080/search/
+	curl -sS --data-urlencode 'yql=select * from sources * where true' http://localhost:8080/search/
 
 ## show kube logs
 logs:
