@@ -8,7 +8,7 @@ install: cli k3d deploy
 
 ## install vespa cli
 cli:
-	hash vespa || brew install vespa-cli
+	hash vespa || tools/install-vespa-cli.sh
 
 ## create k3d cluster
 k3d:
@@ -28,7 +28,7 @@ deploy-configserver:
 	kubectl apply -f infra/ingress/lb-configserver.yaml
 	kubectl apply -f infra/configmap.yml -f infra/headless.yml -f infra/configserver.yml
 	kubectl wait --for=condition=ready pod vespa-configserver-0 --timeout=5m
-	curl -s http://localhost:19071/state/v1/health | jq -r .status.code
+	curl -sS --retry 5 http://localhost:19071/state/v1/health | jq -r .status.code
 
 deploy-vespa:
 	@echo "Deploy admin node, feed container cluster, query container cluster and content node pods"
