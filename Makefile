@@ -27,7 +27,7 @@ deploy-configserver:
 	@echo "Deploy config servers"
 	kubectl apply -f infra/ingress/lb-configserver.yaml
 	kubectl apply -f infra/configmap.yml -f infra/headless.yml -f infra/configserver.yml
-	kubectl rollout status --watch --timeout=5m statefulset/vespa-configserver
+	kubectl rollout status --watch --timeout=7m statefulset/vespa-configserver
 	curl -sS http://localhost:19071/state/v1/health | jq -r .status.code
 
 deploy-vespa:
@@ -47,7 +47,7 @@ deploy-vespa:
 ## deploy app
 deploy-app:
 	vespa deploy apps/album-recommendation/package
-# wait for app to converge
+# wait for app to converge, ie: start feed, query and content services
 	vespa status -w 120
 	make ping
 

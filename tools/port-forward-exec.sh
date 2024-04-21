@@ -4,6 +4,11 @@ set -euo pipefail
 
 [[ "$#" -eq 0 ]] && echo -e "Start/stop kubectl port-forward whilst running a command.\n\nUsage: $0 TYPE/NAME LOCAL_PORT:]REMOTE_PORT command [args..]" >&2 && exit 42
 
+die() {
+    echo -e ERROR: "$@" >&2
+    exit 42
+}
+
 cleanup() {
     local exit_status="$?"
     kill "$kubectl_pid"
@@ -15,10 +20,9 @@ cleanup() {
 kubectl port-forward "$1" "$2" >&2 &
 kubectl_pid=$!
 echo kubectl port-forward "$1" "$2" >&2
-shift 2
 
 trap 'cleanup' ERR
-# TODO: better way to wait for port forward to be established
-sleep 0.2
+timeout 5 sh -c "until nc -z localhost $2; do sleep 0.1; done" || die "timed out"
+shift 2
 "$@"
 cleanup
