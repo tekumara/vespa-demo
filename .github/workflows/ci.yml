@@ -28,7 +28,8 @@ jobs:
         run: make .venv
       - name: install k3d
         run: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-      - run: make cli k3d
+      - name: install vespa cli
+        run: sudo tools/install-vespa-cli.sh
       - run: make deploy-configserver
       - run: make deploy-vespa
       - run: make deploy-app
