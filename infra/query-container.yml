@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: vespa-query-container
-        image: vespaengine/vespa
+        image: vespaengine/vespa:8.331.34
         args: ["services"]
         imagePullPolicy: Always
         envFrom:
