@@ -42,7 +42,7 @@ deploy-vespa:
 
 ## deploy app
 deploy-app:
-	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 vespa deploy app/package
+	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 vespa deploy apps/album-recommendation/package
 
 ## feed data
 feed-data:
