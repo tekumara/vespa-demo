@@ -132,3 +132,27 @@ AP see [Vespa Consistency Model](https://docs.vespa.ai/en/content/consistency.ht
 - [Multinode systems](https://docs.vespa.ai/en/operations-selfhosted/multinode-systems.html)
 - [Using Kubernetes with Vespa](https://docs.vespa.ai/en/operations-selfhosted/using-kubernetes-with-vespa.html)
 - [Multinode-HA sample application (GKE)](https://github.com/vespa-engine/sample-apps/blob/master/examples/operations/multinode-HA/gke/README.md)
+
+## Troubleshooting
+
+### External feed is blocked due to resource exhaustion
+
+> ReturnCode(NO_SPACE, External feed is blocked due to resource exhaustion: in content cluster 'music': disk on node 0 [vespa-content-0.vespa-internal.default.svc.cluster.local] is 84.1% full (the configured limit is 75.0%), disk on node 1 [vespa-content-1.vespa-internal.default.svc.cluster.local] is 84.0% full (the configured limit is 75.0%). See https://docs.vespa.ai/en/operations/feed-block.html)
+
+Inspecting the mounted volume in the pod (this example is when running in GHA):
+
+```
+runner@fv-az1426-737:~/work/vespa-demo/vespa-demo$ kubectl exec -i -t vespa-content-0 -- df -h
+Defaulted container "vespa-content" out of: vespa-content, chown-var (init)
+Filesystem      Size  Used Avail Use% Mounted on
+overlay          73G   62G   12G  85% /
+tmpfs            64M     0   64M   0% /dev
+/dev/root        73G   62G   12G  85% /etc/hosts
+shm              64M     0   64M   0% /dev/shm
+tmpfs            16G   12K   16G   1% /run/secrets/kubernetes.io/serviceaccount
+tmpfs           7.9G     0  7.9G   0% /proc/acpi
+tmpfs           7.9G     0  7.9G   0% /proc/scsi
+tmpfs           7.9G     0  7.9G   0% /sys/firmware
+```
+
+62G/73G = 84.1% which is over the limit of 75.0%. [Vespa assumes it solely controls the disk](https://github.com/vespa-engine/pyvespa/issues/499#issuecomment-1512494415) given to it, so it thinks it has used 84.1% already. However, when using k3d, `overlay` is the underlying host disk provided by the [local storage provider](https://docs.k3s.io/storage#setting-up-the-local-storage-provider) and does not represent the size of the Vespa indexes.

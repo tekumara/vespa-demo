@@ -51,5 +51,13 @@
       <node hostalias="node8" distribution-key="0" />
       <node hostalias="node9" distribution-key="1" />
     </nodes>
+    <!-- because we are using the k3s local storage provider, the disk isn't dedicated to Vespa
+         as it expects, so we need to increase the default limit from 0.75 so it doesn't think
+         the index has become too large -->
+    <tuning>
+        <resource-limits>
+            <disk>0.90</disk>
+        </resource-limits>
+    </tuning>
   </content>
 </services>
