@@ -3,15 +3,15 @@ include .envrc
 
 cluster?=vespa
 
-## install vespa cli, create k3s cluster, and deploy
-install: cli k3s deploy
+## install vespa cli, create k3d cluster, and deploy
+install: cli k3d deploy
 
 ## install vespa cli
 cli:
 	hash vespa || brew install vespa-cli
 
-## create k3s cluster
-k3s:
+## create k3d cluster
+k3d:
 # 2 agents to double total allocatable memory
 	k3d cluster create $(cluster) \
 		-p 19071:19071@loadbalancer -p 8080:8080@loadbalancer -p 8081:8081@loadbalancer \
@@ -47,18 +47,18 @@ deploy-vespa:
 ## deploy app
 deploy-app:
 	vespa deploy apps/album-recommendation/package
-	# TODO - wait until deployment complete
+# TODO - wait until deployment complete
 	make ping
-
-## feed data
-feed-data:
-	vespa feed apps/album-recommendation/ext/documents.jsonl -t http://localhost:8081
 
 ## ping
 ping:
 	tools/port-forward-exec.sh pod/vespa-content-0 19107 curl -s http://localhost:19107/state/v1/health | jq -r .status.code
 	curl -s http://localhost:8080/state/v1/health | jq -r .status.code
 	curl -s http://localhost:8081/state/v1/health | jq -r .status.code
+
+## feed data
+feed:
+	vespa feed apps/album-recommendation/ext/documents.jsonl -t http://localhost:8081
 
 ## query
 query:
