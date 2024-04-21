@@ -1,0 +1,5 @@
+<validation-overrides>
+    <allow until="2024-04-22" comment="Remove existing music schema">schema-removal</allow>
+    <allow until="2024-04-22" comment="Overwrite simple-semantic-search indexing">indexing-change</allow>
+    <allow until="2024-04-22" comment="Overwrite simple-semantic-search fields">field-type-change</allow>
+</validation-overrides>

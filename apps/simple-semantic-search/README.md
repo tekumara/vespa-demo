@@ -33,5 +33,5 @@ vespa query 'yql=select * from doc where userQuery() or ({targetHits: 100}neares
 ```
 vespa query 'yql=select * from doc where userQuery() or ({targetHits: 100}nearestNeighbor(embedding, e))' \
  'input.query(e)=embed(e5, "query: exchanging information by sound")' \
- 'query=exchanging information by sound'  -C query
+ 'query=exchanging information by sound' -C query
 ```

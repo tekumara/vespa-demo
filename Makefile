@@ -46,9 +46,8 @@ deploy-vespa:
 
 ## deploy app
 deploy-app:
-	vespa deploy apps/album-recommendation/package
-# wait for app to converge, ie: start feed, query and content services
-	vespa status -w 120
+# deploy and wait for app to converge, ie: start feed, query and content services
+	vespa deploy apps/album-recommendation/package -w 120
 	make ping
 
 ## ping
@@ -64,6 +63,16 @@ feed:
 ## query
 query:
 	curl -sS --data-urlencode 'yql=select * from sources * where true' http://localhost:8080/search/
+
+## reindex
+reindex:
+	curl -sS -XPOST http://localhost:19071/application/v2/tenant/default/application/default/environment/default/region/default/instance/default/reindex
+	@printf "\n\nReindex is pending application redeployment see https://docs.vespa.ai/en/operations/reindexing.html\n"
+
+## reindexing status
+reindexing:
+	curl -sS http://localhost:19071/application/v2/tenant/default/application/default/environment/default/region/default/instance/default/reindexing
+
 
 ## show kube logs
 logs:

@@ -96,7 +96,7 @@ Includes the following for documents:
 
 And the following for querying:
 
-- [Searcher](https://docs.vespa.ai/en/reference/services-search.html)
+- [Searcher](https://docs.vespa.ai/en/reference/services-search.html) for the [query endpoint](https://docs.vespa.ai/en/query-api.html)
 - [Huggingface Embbedder](https://docs.vespa.ai/en/embedding.html#huggingface-embedder) to run ONNX embedding models
 - [LLM Clients](https://docs.vespa.ai/en/llms-in-vespa.html#setting-up-llm-clients-in-services.xml)
 
@@ -106,7 +106,7 @@ Responsible for storing data and execute queries and inferences over the data. D
 
 ## Application packages
 
-- maps services to nodes in [services.xml](https://docs.vespa.ai/en/reference/services.html)
+- maps services to nodes in [services.xml](https://docs.vespa.ai/en/tutorials/news-2-basic-feeding-and-query.html#services-specification)
 - defines aliases for nodes in [hosts.xml](https://docs.vespa.ai/en/reference/hosts.html#)
 - defines document [schemas](https://docs.vespa.ai/en/schemas.html)
 - contains machine-learned models and Java components
@@ -132,6 +132,9 @@ AP see [Vespa Consistency Model](https://docs.vespa.ai/en/content/consistency.ht
 - [Multinode systems](https://docs.vespa.ai/en/operations-selfhosted/multinode-systems.html)
 - [Using Kubernetes with Vespa](https://docs.vespa.ai/en/operations-selfhosted/using-kubernetes-with-vespa.html)
 - [Multinode-HA sample application (GKE)](https://github.com/vespa-engine/sample-apps/blob/master/examples/operations/multinode-HA/gke/README.md)
+- [Models hot swap](https://docs.vespa.ai/en/tutorials/models-hot-swap.html)
+- [Convergence](https://github.com/vespa-engine/vespa/issues/29861)
+- [Batch delete](https://docs.vespa.ai/en/operations/batch-delete.html)
 
 ## Troubleshooting
 
