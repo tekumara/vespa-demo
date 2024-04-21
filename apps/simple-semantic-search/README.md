@@ -5,7 +5,7 @@ Adapted from [here](https://github.com/vespa-engine/sample-apps/blob/e7f6ab63d7d
 Deploy:
 
 ```
-vespa deploy apps/simple-semantic-search/package
+vespa deploy apps/simple-semantic-search
 ```
 
 Feed:

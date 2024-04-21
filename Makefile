@@ -47,7 +47,7 @@ deploy-vespa:
 ## deploy app
 deploy-app:
 # deploy and wait for app to converge, ie: start feed, query and content services
-	vespa deploy apps/album-recommendation/package -w 120
+	vespa deploy apps/album-recommendation -w 120
 	make ping
 
 ## ping
