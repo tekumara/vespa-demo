@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: config-server
+    port: 19071
+    protocol: TCP
+    targetPort: 19071
+  selector:
+    app: vespa-configserver
+

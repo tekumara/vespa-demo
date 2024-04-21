@@ -8,15 +8,15 @@ install: cli k3s deploy
 
 ## install vespa cli
 cli:
-	hash vespa-cli || brew install vespa-cli
+	hash vespa || brew install vespa-cli
 
 ## create k3s cluster
 k3s:
 # 2 agents to double total allocatable memory
-	k3d cluster create $(cluster) -p 6379:6379@loadbalancer --agents 2 --wait
+	k3d cluster create $(cluster) \
+		-p 19071:19071@loadbalancer -p 8080:8080@loadbalancer -p 8081:8081@loadbalancer \
+		--agents 2 --wait
 	@k3d kubeconfig write $(cluster) > /dev/null
-	@echo "Probing until cluster is ready (~60 secs)..."
-	@while ! kubectl get crd ingressroutes.traefik.containo.us 2> /dev/null ; do sleep 10 && echo $$((i=i+10)); done
 	@echo -e "\nTo use your cluster set:\n"
 	@echo "export KUBECONFIG=$(KUBECONFIG)"
 
@@ -24,13 +24,14 @@ k3s:
 deploy: deploy-configserver deploy-vespa
 
 deploy-configserver:
-	echo "Deploy config servers"
+	@echo "Deploy config servers"
+	kubectl apply -f infra/ingress/lb-configserver.yaml
 	kubectl apply -f infra/configmap.yml -f infra/headless.yml -f infra/configserver.yml
-	kubectl wait --for=condition=ready pod vespa-configserver-0 --timeout=1m
-	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 curl -s http://localhost:19071/state/v1/health | jq -r .status.code
+	kubectl wait --for=condition=ready pod vespa-configserver-0 --timeout=5m
+	curl -s http://localhost:19071/state/v1/health | jq -r .status.code
 
 deploy-vespa:
-	echo "Deploying admin node, feed container cluster, query container cluster and content node pods"
+	@echo "Deploy admin node, feed container cluster, query container cluster and content node pods"
 	kubectl apply \
 		-f infra/service-feed.yml \
 		-f infra/service-query.yml \
@@ -38,25 +39,30 @@ deploy-vespa:
 		-f infra/feed-container.yml \
 		-f infra/query-container.yml \
 		-f infra/content.yml
-	make ping
+	kubectl apply -f infra/ingress/lb-query.yaml -f infra/ingress/lb-feed.yaml
+	kubectl wait --for=condition=ready pod vespa-content-0 --timeout=7m
+	kubectl wait --for=condition=ready pod vespa-feed-container-0 --timeout=7m
+	kubectl wait --for=condition=ready pod vespa-query-container-0 --timeout=7m
 
 ## deploy app
 deploy-app:
-	tools/port-forward-exec.sh pod/vespa-configserver-0 19071 vespa deploy apps/album-recommendation/package
+	vespa deploy apps/album-recommendation/package
+	# TODO - wait until deployment complete
+	make ping
 
 ## feed data
 feed-data:
-	tools/port-forward-exec.sh svc/vespa-feed 8080 tools/feed-data.sh
+	vespa feed apps/album-recommendation/ext/documents.jsonl -t http://localhost:8081
 
 ## ping
 ping:
 	tools/port-forward-exec.sh pod/vespa-content-0 19107 curl -s http://localhost:19107/state/v1/health | jq -r .status.code
-	tools/port-forward-exec.sh svc/vespa-feed 8080 curl -s http://localhost:8080/state/v1/health | jq -r .status.code
-	tools/port-forward-exec.sh svc/vespa-query 8080 curl -s http://localhost:8080/state/v1/health | jq -r .status.code
+	curl -s http://localhost:8080/state/v1/health | jq -r .status.code
+	curl -s http://localhost:8081/state/v1/health | jq -r .status.code
 
 ## query
 query:
-	tools/port-forward-exec.sh svc/vespa-query 8080 curl --data-urlencode 'yql=select * from sources * where true' http://localhost:8080/search/ 2>/dev/null
+	curl -s --data-urlencode 'yql=select * from sources * where true' http://localhost:8080/search/
 
 ## show kube logs
 logs:
