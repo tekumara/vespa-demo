@@ -27,7 +27,7 @@ deploy-configserver:
 	@echo "Deploy config servers"
 	kubectl apply -f infra/ingress/lb-configserver.yaml
 	kubectl apply -f infra/configmap.yml -f infra/headless.yml -f infra/configserver.yml
-	kubectl wait --for=condition=ready pod vespa-configserver-0 --timeout=5m
+	kubectl rollout status --watch --timeout=5m statefulset/vespa-configserver
 	curl -sS --retry 5 --retry-all-errors http://localhost:19071/state/v1/health | jq -r .status.code
 
 deploy-vespa:
@@ -40,9 +40,9 @@ deploy-vespa:
 		-f infra/query-container.yml \
 		-f infra/content.yml
 	kubectl apply -f infra/ingress/lb-query.yaml -f infra/ingress/lb-feed.yaml
-	kubectl wait --for=condition=ready pod vespa-content-0 --timeout=7m
-	kubectl wait --for=condition=ready pod vespa-feed-container-0 --timeout=7m
-	kubectl wait --for=condition=ready pod vespa-query-container-0 --timeout=7m
+	kubectl rollout status --watch --timeout=7m statefulset/vespa-content
+	kubectl rollout status --watch --timeout=7m statefulset/vespa-feed-container
+	kubectl rollout status --watch --timeout=7m statefulset/vespa-query-container
 
 ## deploy app
 deploy-app:
