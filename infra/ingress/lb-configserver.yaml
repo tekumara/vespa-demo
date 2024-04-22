@@ -11,4 +11,3 @@ spec:
     targetPort: 19071
   selector:
     app: vespa-configserver
-

@@ -24,15 +24,23 @@ make deploy-app feed
 
 ## Usage
 
+Status:
+
+```
+vespa status
+```
+
 Basic query:
 
 ```
 make query
 ```
 
-Endpoints:
+The following [ingress endpoints](infra/ingress) are exposed:
 
-- TODO
+- [http://localhost:19071](http://localhost:19071) config server
+- [http://localhost:8081](http://localhost:8081) feed cluster
+- [http://localhost:8080](http://localhost:8080) query cluster
 
 ## Failover
 
