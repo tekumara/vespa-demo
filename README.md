@@ -19,7 +19,7 @@ make install
 Deploy album recommendation app and feed data:
 
 ```
-make deploy-app feed-data
+make deploy-app feed
 ```
 
 ## Usage
@@ -135,6 +135,7 @@ AP see [Vespa Consistency Model](https://docs.vespa.ai/en/content/consistency.ht
 - [Models hot swap](https://docs.vespa.ai/en/tutorials/models-hot-swap.html)
 - [Convergence](https://github.com/vespa-engine/vespa/issues/29861)
 - [Batch delete](https://docs.vespa.ai/en/operations/batch-delete.html)
+- [Modifying schemas](https://docs.vespa.ai/en/reference/schema-reference.html#modifying-schemas)
 
 ## Troubleshooting
 

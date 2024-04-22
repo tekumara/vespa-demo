@@ -23,6 +23,10 @@
   </admin>
 
   <container id="feed" version="1.0">
+    <http>
+        <!-- use a unique port rather so the vespa cli doesn't assume 8080 which overlaps with the query cluster -->
+        <server id="feed" port="8081" />
+    </http>
     <document-api />
     <document-processing/>
     <nodes>

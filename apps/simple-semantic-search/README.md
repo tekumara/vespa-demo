@@ -11,9 +11,9 @@ vespa deploy apps/simple-semantic-search
 Feed:
 
 ```
-vespa document apps/simple-semantic-search/ext/1.json -t http://localhost:8081
-vespa document apps/simple-semantic-search/ext/2.json -t http://localhost:8081
-vespa document apps/simple-semantic-search/ext/3.json -t http://localhost:8081
+vespa document apps/simple-semantic-search/ext/1.json -C feed
+vespa document apps/simple-semantic-search/ext/2.json -C feed
+vespa document apps/simple-semantic-search/ext/3.json -C feed
 ```
 
 Query:

@@ -58,7 +58,7 @@ ping:
 
 ## feed data
 feed:
-	vespa feed apps/album-recommendation/ext/documents.jsonl -t http://localhost:8081 | tee /dev/stderr | jq -e '."http.response.code.counts"."200" == 5'
+	vespa feed apps/album-recommendation/ext/documents.jsonl -C feed | tee /dev/stderr | jq -e '."http.response.code.counts"."200" == 5'
 
 ## query
 query:

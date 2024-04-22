@@ -11,9 +11,9 @@ vespa deploy apps/colbert
 Feed:
 
 ```
-vespa document apps/colbert/ext/1.json -t http://localhost:8081
-vespa document apps/colbert/ext/2.json -t http://localhost:8081
-vespa document apps/colbert/ext/3.json -t http://localhost:8081
+vespa document apps/colbert/ext/1.json -C feed
+vespa document apps/colbert/ext/2.json -C feed
+vespa document apps/colbert/ext/3.json -C feed
 ```
 
 Query:
