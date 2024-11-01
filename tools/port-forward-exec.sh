@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-[[ "$#" -eq 0 ]] && echo -e "Start/stop kubectl port-forward whilst running a command.\n\nUsage: $0 TYPE/NAME LOCAL_PORT:]REMOTE_PORT command [args..]" >&2 && exit 42
+[[ "$#" -eq 0 ]] && echo -e "Start/stop kubectl port-forward whilst running a command.\n\nUsage: $0 TYPE/NAME [LOCAL_PORT:]REMOTE_PORT command [args..]" >&2 && exit 42
 
 die() {
     echo -e ERROR: "$@" >&2
