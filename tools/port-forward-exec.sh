@@ -22,7 +22,7 @@ kubectl_pid=$!
 echo kubectl port-forward "$1" "$2" >&2
 
 trap 'cleanup' ERR
-timeout 5 sh -c "until nc -z localhost $2; do sleep 0.1; done" || die "timed out"
+timeout --foreground 5 sh -c "until nc -z localhost $2; do sleep 0.1; done" || die "timed out"
 shift 2
 "$@"
 cleanup
